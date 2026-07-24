@@ -25,14 +25,17 @@ abstract: |
 
 # Introduction
 
-Practitioners of Abrahamic religions make up over half the world’s population. The inherent structure of their holy texts, specifically the persons that appear in both the Qur’an and Bible, are worth studying if for no other reason than their prevalence in society. The textual data is the cornerstone of both of the faiths’ beliefs. Despite the societal contention between practitioners of each religion, many important persons overlap between the two texts. 
+Practitioners of Abrahamic religions make up over half the world’s population ^[According to the World Population Review, 32% of the global population identify as Christian, 25% Muslim and 0.2% Jewish], and the holy texts of these faiths serve as the cornerstone for their respective beliefs and cultural traditions. Despite historical and contemporary contention between Christianity and Islam, the New Testament Gospels and the Qur’an share a deeply interconnected lineage stemming from Abraham. Shared figures bridge them conceptually, but the texts themselves are structured in fundamentally different ways. The four New Testament Gospels (Matthew, Mark, Luke, and John) are framed primarily as chronological narratives, whereas the Surahs of the Qur’an are formatted as a largely thematic discourse.
 
-- Data Sources: BibleData .csv files from GitHub and Qur’an API
-- Evaluate how distinct literary styles, chronological narratives vs. thematic discourses, alter graph topology
-- Data normalization, clustering coefficients, and degree distribution analysis to quantify network differences
+This study analyzes textual data from both the Bible and Qur'an to construct, visualize, and compare their underlying character networks. Specifically, this study evaluates how these distinct literary styles alter the resulting graph topology among shared entities. Because the texts differ significantly in length, scope, and structural organization, the methodology incorporates data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences. Data for this study is drawn from the BibleData repository for the Gospels [@noauthor_bibledata_nodate] and the Sahih International English translation via the Qur’an API [@network_api_nodate].
+
+This paper seeks to address three central research questions:
+
 - Does a thematic text structure exhibit different network characteristics compared to a chronological narrative?
-- How do the centrality profiles (degree, betweenness, and eigenvector) of shared characters shift between texts?
-- Do both networks follow a power-law degree distribution?
+- How do the centrality metrics of shared characters shift between the two texts?
+- Do both networks exhibit power-law degree distributions despite their fundamental structural differences?
+
+Ultimately, this comparative network analysis serves to show that the shared principal figures rise above the structural settings of their respective texts. Beyond religious and literary divides, they represent a shared foundation of human hope and eternal faith.
 
 # Literature Review
 
@@ -40,10 +43,13 @@ In attempting to analyze textual data, network analytics provides an empirical p
 
 Social networks imply an interaction between two characters. A co-presence network emphasizes the relationship between characters rather than requiring explicit conversations. It leverages the literary style of a chronological narrative. Implicit relationships are also important. 
 
-[@massey_social_2016]
-[@grandjean_data_2013]
-[@drpinghaus_social_2022]
-[@dorpinghaus_structural_2026]
+Religious texts written in ancient languages present a problem for modern natural language processing tools. It's hard to identify who a `"PERSON"` might be when they're given multiple names in the span of the same text. Additionally, determining a threshold for what constitutes an implicit relationship between characters is challenging [@drpinghaus_social_2022]. This also introduces the deliniation between social, co-presence, and co-occurence networks. 
+
+Topics in social network analytics: degree or valency, centrality metrics, clustering coefficients, diameter, degree, density, and ego networks [@massey_social_2016]. These metrics transform qualitative relationships between characters into mathematical terms ripe for comparison.
+
+SNA done in the context of Luke's gospel [@dorpinghaus_structural_2026]. 
+
+Analyzed all four gospels, unsurprisingly Jesus is the hub for all four [@grandjean_data_2013]
 
 # Methodology
 

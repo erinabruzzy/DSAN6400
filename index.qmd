@@ -53,22 +53,41 @@ Analyzed all four gospels, unsurprisingly Jesus is the hub for all four [@grandj
 
 # Methodology
 
+The methodology explains how the research was conducted, including study design, data collection, and analysis methods. It ensures reproducibility and allows readers to evaluate the validity of the findings
+
 Utilizing data from [@noauthor_bibledata_nodate] and [@network_api_nodate]
 
 Explain translation vs. transliteration: used english Sahih International translation
 
-How to define textual proximity for edges?
-- the bibledata already defines relationships within verses 
-- Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
-
 ## Global Topology
 
-Nodes
-Edges
-Density
-Average Clustering Coefficient
-Average Path Length
-Diameter
+Nodes: characters
+
+Edges: instances of co-occurence between characters
+
+This brings up a difficult question to answer, how to define textual proximity for edges?
+- the bibledata defines relationships within verses, but the Qur'an is written in a different style requiring its own approach 
+- Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
+
+either verse-level, sliding window, or surah-level. . . 
+
+| Co-Occurrence Method | Instances of Co-Characters | Total Weighted Edges | Unique Edges |
+| :--- | :---: | :---: | :---: |
+| **Single Verses ($N=1$)** | 208 | 398 | 106 |
+| **Sliding Window ($N=5$)** | 1,176 | 2,957 | 184 |
+| **Surah-Level** | 63 | 991 | 326 |
+
+: Statistics on Textual Proximity Methods {#tbl-quran-edges}
+
+Density: the proportion of actual connections in a network relative to all possible connections, indicating how interconnected the network is
+
+Average Clustering Coefficient: quantifies the degree to which nodes in the graph tend to cluster together.
+
+insert formula?
+
+Average Path Length: the average number of steps along the shortest paths for all possible pairs of nodes. It measures the efficiency of information or mass transport in a network.
+
+Diameter: the greatest distance between any pair of nodes, measured along the shortest paths connecting them. 
 
 ## Centrality
 

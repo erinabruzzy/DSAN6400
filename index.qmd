@@ -25,7 +25,7 @@ abstract: |
 
 # Introduction
 
-Practitioners of Abrahamic religions make up over half the world’s population ^[According to the World Population Review, 32% of the global population identify as Christian, 25% Muslim and 0.2% Jewish], and the holy texts of these faiths serve as the cornerstone for their respective beliefs and cultural traditions. Despite historical and contemporary contention between Christianity and Islam, the New Testament Gospels and the Qur’an share a deeply interconnected lineage stemming from Abraham. Shared figures bridge them conceptually, but the texts themselves are structured in fundamentally different ways. The four New Testament Gospels (Matthew, Mark, Luke, and John) are framed primarily as chronological narratives, whereas the Surahs of the Qur’an are formatted as a largely thematic discourse.
+Practitioners of Abrahamic religions make up over half the world’s population ^[According to the *World Population Review*, 32% of the global population identify as Christian, 25% Muslim and 0.2% Jewish], and the holy texts of these faiths serve as the cornerstone for their respective beliefs and cultural traditions. Despite historical and contemporary contention between Christianity and Islam, the New Testament Gospels and the Qur’an share a deeply interconnected lineage stemming from Abraham. Shared figures bridge them conceptually, but the texts themselves are structured in fundamentally different ways. The four New Testament Gospels (Matthew, Mark, Luke, and John) are framed primarily as chronological narratives, whereas the Surahs of the Qur’an are formatted as a largely thematic discourse.
 
 This study analyzes textual data from both the Bible and Qur'an to construct, visualize, and compare their underlying character networks. Specifically, this study evaluates how these distinct literary styles alter the resulting graph topology among shared entities. Because the texts differ significantly in length, scope, and structural organization, the methodology incorporates data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences. Data for this study is drawn from the BibleData repository for the Gospels [@noauthor_bibledata_nodate] and the Sahih International English translation via the Qur’an API [@network_api_nodate].
 
@@ -61,27 +61,84 @@ How to define textual proximity for edges?
 - the bibledata already defines relationships within verses 
 - Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
 
-Compute network-level metrics
+## Global Topology
 
-Measure clustering coefficients 
+Nodes
+Edges
+Density
+Average Clustering Coefficient
+Average Path Length
+Diameter
 
-Test degree distributions (power-law fitting)
+## Centrality
 
-Centralities
+**Degree Centrality**
+Degree is a simple centrality measure that counts how many neighbors a node has. A node is important if it has many neighbors, or, in the directed case, if there are many other nodes that link to it, or if it links to many other nodes.
 
-Spearman Rank Correlations
+$$
+C_D(v) = \frac{\deg(v)}{N - 1}
+$$
 
-Top-K centrality shifts
+* $\deg(v)$: Number of edges connected to node $v$
+* $N$: Total number of nodes in the network
 
-Community detection? node embeddings?
+**Closeness Centrality**
+In a connected graph, the normalized closeness centrality (or closeness) of a node is the average length of the shortest path between the node and all other nodes in the graph. Thus the more central a node is, the closer it is to all other nodes.
 
-Visualizations
+$$
+C_B'(v) = \frac{2}{(N - 1)(N - 2)} \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}
+$$
 
-## Network Metrics
+* $\sigma_{st}$: Total number of shortest paths from node $s$ to node $t$
+* $\sigma_{st}(v)$: Number of those shortest paths that pass through node $v$
 
-To evaluate structural importance, we measure **degree centrality** and **betweenness centrality**:
+**Betweeness Centrality**
+Betweenness centrality quantifies the number of times a node acts as a bridge along the shortest path between two other nodes.
 
-$$C_B(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$$
+$$
+C_C(v) = \frac{N - 1}{\sum_{u \neq v} d(v, u)}
+$$
+
+* $d(v, u)$: Shortest path distance (geodesic distance) between node $v$ and node $u$
+
+**Eigenvector Centrality**
+Eigen-centrality is a prestige score which measures the node’s influence. It is a nodal attribute, as is the case with all other centrality measures. Connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes. A high Eigen-centrality means the node is connected to many nodes with high scores.
+
+$$
+\lambda x_v = \sum_{u \in N(v)} x_u = \sum_{u=1}^{N} A_{vu} x_u
+$$
+
+## Power-Law Distribution
+
+A power law is a functional relationship between two quantities, where a relative change in one quantity results in a relative change in the other quantity proportional to a power of the change, independent of the initial size of those quantities
+
+$$
+f(x) = \alpha x^{-k}
+$$
+
+* In real networks, properties are often power-law distributed
+
+![Sample Power Law Distribution Graph](images/power_law.png)
+
+## Community Detection
+
+**Louvain Method:**
+
+- For networks with weighted co-occurrence edges, the Louvain algorithm is the gold standard.
+
+- Maximizes modularity score $Q$ across the network.
+
+- Efficient and effective for large networks.
+
+- Uses a two-phase iterative optimization process. In phase 1, each node is moved to the community that yields the highest gain in modularity. In phase 2, the algorithm aggregates nodes of the same community and builds a new network. These steps are repeated iteratively until modularity is maximized and cannot be increased further.
+
+$$
+Q = \frac{1}{2m} \sum_{ij} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j)
+$$
+
+## Vector Embeddings 
+
+TBD
 
 # Results
 

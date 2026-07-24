@@ -1,0 +1,94 @@
+---
+title: "Comparative Social Network Analysis of the New Testament Gospels and the Qur'an"
+author:
+  - name: "Erin Brzusek"
+    affiliation: "Georgetown University"
+    email: "eb1496@georgetown.edu"
+format:
+  pdf:
+    documentclass: article
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    fontsize: 10pt
+    columns: 2
+    number-sections: true
+    colorlinks: true
+    linestretch: 1.15
+bibliography: references.bib
+csl: https://www.zotero.org/styles/ieee # formats inline citations as [1], [2]
+abstract: | 
+    This study seeks to analyze textual data from the four New Testament Gospels (Matthew, Mark, Luke, and John) and the Surahs of the Quran to construct and compare social networks. The goal of this project is to evaluate how the distinct literary styles of chronological narratives and thematic discourses alter the structure of the resulting social networks. Because the texts differ significantly in length and structure, the methodology requires data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences.  
+---
+
+# Introduction
+
+Practitioners of Abrahamic religions make up over half the world’s population. The inherent structure of their holy texts, specifically the persons that appear in both the Qur’an and Bible, are worth studying if for no other reason than their prevalence in society. The textual data is the cornerstone of both of the faiths’ beliefs. Despite the societal contention between practitioners of each religion, many important persons overlap between the two texts. 
+
+- Data Sources: BibleData .csv files from GitHub and Qur’an API
+- Evaluate how distinct literary styles, chronological narratives vs. thematic discourses, alter graph topology
+- Data normalization, clustering coefficients, and degree distribution analysis to quantify network differences
+- Does a thematic text structure exhibit different network characteristics compared to a chronological narrative?
+- How do the centrality profiles (degree, betweenness, and eigenvector) of shared characters shift between texts?
+- Do both networks follow a power-law degree distribution?
+
+# Literature Review
+
+In attempting to analyze textual data, network analytics provides an empirical perspective to the task. Rather than characters being classified as "protagonists", their betweeness centrality can be calculated and visualized. 
+
+Social networks imply an interaction between two characters. A co-presence network emphasizes the relationship between characters rather than requiring explicit conversations. It leverages the literary style of a chronological narrative. Implicit relationships are also important. 
+
+[@massey_social_2016]
+[@grandjean_data_2013]
+[@drpinghaus_social_2022]
+[@dorpinghaus_structural_2026]
+
+# Methodology
+
+Utilizing data from [@noauthor_bibledata_nodate] and [@network_api_nodate]
+
+Explain translation vs. transliteration: used english Sahih International translation
+
+How to define textual proximity for edges?
+- the bibledata already defines relationships within verses 
+- Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
+
+Compute network-level metrics
+
+Measure clustering coefficients 
+
+Test degree distributions (power-law fitting)
+
+Centralities
+
+Spearman Rank Correlations
+
+Top-K centrality shifts
+
+Community detection? node embeddings?
+
+Visualizations
+
+## Network Metrics
+
+To evaluate structural importance, we measure **degree centrality** and **betweenness centrality**:
+
+$$C_B(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$$
+
+# Results
+
+
+
+# Discussion 
+
+
+
+# Conclusion
+
+
+
+# References
+::: {#refs}
+:::

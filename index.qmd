@@ -1,5 +1,5 @@
 ---
-title: "Comparative Social Network Analysis of the New Testament Gospels and the Qur'an"
+title: "Comparative Co-Presence Network Analysis of the New Testament Gospels and the Qur'an"
 author:
   - name: "Erin Brzusek"
     affiliation: "Georgetown University"
@@ -20,7 +20,7 @@ format:
 bibliography: references.bib
 csl: https://www.zotero.org/styles/ieee # formats inline citations as [1], [2]
 abstract: | 
-    This study seeks to analyze textual data from the four New Testament Gospels (Matthew, Mark, Luke, and John) and the Surahs of the Quran to construct and compare social networks. The goal of this project is to evaluate how the distinct literary styles of chronological narratives and thematic discourses alter the structure of the resulting social networks. Because the texts differ significantly in length and structure, the methodology requires data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences.  
+    This study seeks to analyze textual data from the four New Testament Gospels (Matthew, Mark, Luke, and John) and the Surahs of the Quran to construct and compare co-presence networks. The goal of this project is to evaluate how the distinct literary styles of chronological narratives and thematic discourses alter the structure of the resulting networks. Because the texts differ significantly in length and structure, the methodology requires data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences.  
 ---
 
 # Introduction

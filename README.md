@@ -1,5 +1,5 @@
 ---
-title: "Comparative Social Network Analysis of the Bible and the Quran"
+title: "Comparative Co-Presence Network Analysis of the New Testament Gospels and the Qur'an"
 author: "Erin Brzusek"
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "Comparative Co-Presence Network Analysis of the New Testament Gospels and the Qur'an"
+title: "Comparative Co-Occurrence Network Analysis of the New Testament Gospels and the Qur'an"
 author:
   - name: "Erin Brzusek"
     affiliation: "Georgetown University"
@@ -20,12 +20,12 @@ format:
 bibliography: references.bib
 csl: https://www.zotero.org/styles/ieee # formats inline citations as [1], [2]
 abstract: | 
-    This study seeks to analyze textual data from the four New Testament Gospels (Matthew, Mark, Luke, and John) and the Surahs of the Quran to construct and compare co-presence networks. The goal of this project is to evaluate how the distinct literary styles of chronological narratives and thematic discourses alter the structure of the resulting networks. Because the texts differ significantly in length and structure, the methodology requires data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences.  
+    This study seeks to analyze textual data from the four New Testament Gospels (Matthew, Mark, Luke, and John) and the Surahs of the Quran to construct and compare co-occurrence networks. The goal of this project is to evaluate how the distinct literary styles of chronological narrative and thematic discourse alter the structure of the resulting networks. Because the texts differ significantly in length and structure, the methodology requires data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences.  
 ---
 
 # Introduction
 
-Practitioners of Abrahamic religions make up over half the world’s population ^[According to the *World Population Review*, 32% of the global population identify as Christian, 25% Muslim and 0.2% Jewish], and the holy texts of these faiths serve as the cornerstone for their respective beliefs and cultural traditions. Despite historical and contemporary contention between Christianity and Islam, the New Testament Gospels and the Qur’an share a deeply interconnected lineage stemming from Abraham. Shared figures bridge them conceptually, but the texts themselves are structured in fundamentally different ways. The four New Testament Gospels (Matthew, Mark, Luke, and John) are framed primarily as chronological narratives, whereas the Surahs of the Qur’an are formatted as a largely thematic discourse.
+Practitioners of Abrahamic religions make up over half the world’s population ^[According to the *World Population Review*, 32% of the global population identify as Christian, 25% Muslim and 0.2% Jewish], and the holy texts of these faiths serve as the cornerstone for their respective beliefs and cultural traditions. Despite historical and contemporary contention between Christianity and Islam, the New Testament Gospels and the Qur’an share a deeply interconnected lineage stemming from Abraham. Shared figures bridge them conceptually, but the texts themselves are structured in fundamentally different ways. The four New Testament Gospels (Matthew, Mark, Luke, and John) are framed primarily as chronological narratives, whereas the Surahs of the Qur’an are formatted as a thematic discourse.
 
 This study analyzes textual data from both the Bible and Qur'an to construct, visualize, and compare their underlying character networks. Specifically, this study evaluates how these distinct literary styles alter the resulting graph topology among shared entities. Because the texts differ significantly in length, scope, and structural organization, the methodology incorporates data normalization, clustering coefficient comparisons, and degree distribution analysis to quantify structural similarities and differences. Data for this study is drawn from the BibleData repository for the Gospels [@noauthor_bibledata_nodate] and the Sahih International English translation via the Qur’an API [@network_api_nodate].
 
@@ -35,29 +35,25 @@ This paper seeks to address three central research questions:
 - How do the centrality metrics of shared characters shift between the two texts?
 - Do both networks exhibit power-law degree distributions despite their fundamental structural differences?
 
-Ultimately, this comparative network analysis serves to show that the shared principal figures rise above the structural settings of their respective texts. Beyond religious and literary divides, they represent a shared foundation of human hope and eternal faith.
+Ultimately, this comparative network analysis serves to show that the shared principal figures rise above the structural settings of their respective texts. Beyond religious and literary divides, these texts represent a shared foundation of human hope and eternal faith.
 
 # Literature Review
 
-In attempting to analyze textual data, network analytics provides an empirical perspective to the task. Rather than characters being classified as "protagonists", their betweeness centrality can be calculated and visualized. 
+In the noble pursuit of analyzing textual data, the application of network analytics provides an empirical perspective. Vague adjectives like *important* to describe characters are traded for betweenness centrality, *subjective groupings* yield to formal community detection algorithms, and prominence stops being a *matter of opinion* and starts being a function of degree density [@massey_social_2016].
 
-Social networks imply an interaction between two characters. A co-presence network emphasizes the relationship between characters rather than requiring explicit conversations. It leverages the literary style of a chronological narrative. Implicit relationships are also important. 
+While traditional social networks require explicit interactions, character networks derived from literature often rely on co-occurrence [@drpinghaus_social_2022]. Co-occurence^[Social networks require explicit interactions between characters, co-presence characters are present in the same scene, and co-occurrence characters appear within a defined threshold] models emphasize relational proximity without requiring a line of spoken dialogue. This approach leverages the implicit, chronological nature of written narrative, capturing structural dependencies that direct dialogue models miss.  
 
-Religious texts written in ancient languages present a problem for modern natural language processing tools. It's hard to identify who a `"PERSON"` might be when they're given multiple names in the span of the same text. Additionally, determining a threshold for what constitutes an implicit relationship between characters is challenging [@drpinghaus_social_2022]. This also introduces the deliniation between social, co-presence, and co-occurence networks. 
+However, applying modern natural language processing (NLP) to ancient religious texts introduces distinct computational challenges. Standard Named Entity Recognition (NER) models struggle to identify entities labeled as `PERSON` when a character is referred to by multiple titles within the same text. Beyond entity resolution, establishing an appropriate threshold for what constitutes an implicit relationship remains a sticking point.
 
-Topics in social network analytics: degree or valency, centrality metrics, clustering coefficients, diameter, degree, density, and ego networks [@massey_social_2016]. These metrics transform qualitative relationships between characters into mathematical terms ripe for comparison.
-
-SNA done in the context of Luke's gospel [@dorpinghaus_structural_2026]. 
-
-Analyzed all four gospels, unsurprisingly Jesus is the hub for all four [@grandjean_data_2013]
+In biblical studies, network analytics serves a greater purpose than simply confirming that Jesus is the central network hub [@grandjean_data_2013]. These methods can uncover distinct narrative communities [@dorpinghaus_structural_2026], track how character influence shifts as a story progresses, and highlight bridges holding different scenes together. Unsurprisingly, a recurring theme across this literature is the difficulty of edge definitions. Whether defining by scene co-presence, verse co-occurrence, or a sliding window of $N$ verses completely reshapes network density, degree distributions, and centrality rankings. 
 
 # Methodology
 
-The methodology explains how the research was conducted, including study design, data collection, and analysis methods. It ensures reproducibility and allows readers to evaluate the validity of the findings
+To construct the co-occurrence networks, data was extracted from two separate repositories:
 
-Utilizing data from [@noauthor_bibledata_nodate] and [@network_api_nodate]
+1) **Qur'an:** Textual data was gathered via the Qur'an API [@network_api_nodate], utilizing the widely recognized Sahih International English translation. Translated by Emily Assami, Mary Kennedy, and Amatullah Bantley^[According to *Wikipedia*, it was published under the collective name Umm Muhammad], this version is known for its modern, un-archaic language while maintaining a conservative interpretive. An English translation^[Transliteration is converting from one writing system to another while preserving the pronunciation, translation is converting the meaning of a text from one language to another] was intentionally selected to facilitate standardized Named Entity Recognition (NER) and entity mapping.
 
-Explain translation vs. transliteration: used english Sahih International translation
+2) **Gospels:** Character co-presence data for the New Testament was sourced from the open-source BibleData project [@noauthor_bibledata_nodate]. Specifically, I utilized the pre-structured `PersonVerseApostolic.csv` file, which explicitly links figures within the same verse.
 
 ## Global Topology
 
@@ -67,17 +63,20 @@ Edges: instances of co-occurence between characters
 
 This brings up a difficult question to answer, how to define textual proximity for edges?
 - the bibledata defines relationships within verses, but the Qur'an is written in a different style requiring its own approach 
+- also, the bibledata out of the box definition rersults in a pretty sparse network 
 - Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
 
 either verse-level, sliding window, or surah-level. . . 
 
-| Co-Occurrence Method | Instances of Co-Characters | Total Weighted Edges | Unique Edges |
+| Network Name | Nodes ($|V|$) | Edges ($|E|$) | Density ($D$) |
 | :--- | :---: | :---: | :---: |
-| **Single Verses ($N=1$)** | 208 | 398 | 106 |
-| **Sliding Window ($N=5$)** | 1,176 | 2,957 | 184 |
-| **Surah-Level** | 63 | 991 | 326 |
+| **Gospels (Verse-Level)** | 189 | 465 | 0.0262 |
+| **Gospels (Sliding Window $N=5$)** | 198 | 2,657 | 0.1362 |
+| **Qur'an (Ayah-Level)** | 37 | 106 | 0.1592 |
+| **Qur'an (Sliding Window $N=5$)** | 37 | 184 | 0.2763 |
+| **Qur'an (Surah-Level)** | 37 | 326 | 0.4895 |
 
-: Statistics on Textual Proximity Methods {#tbl-quran-edges}
+: Textual Proximity Techniques {#tbl-network-metrics}
 
 Density: the proportion of actual connections in a network relative to all possible connections, indicating how interconnected the network is
 
@@ -89,7 +88,7 @@ Average Path Length: the average number of steps along the shortest paths for al
 
 Diameter: the greatest distance between any pair of nodes, measured along the shortest paths connecting them. 
 
-## Centrality
+## Centrality Measurements
 
 **Degree Centrality**
 Degree is a simple centrality measure that counts how many neighbors a node has. A node is important if it has many neighbors, or, in the directed case, if there are many other nodes that link to it, or if it links to many other nodes.
@@ -154,10 +153,6 @@ $$
 $$
 Q = \frac{1}{2m} \sum_{ij} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j)
 $$
-
-## Vector Embeddings 
-
-TBD
 
 # Results
 

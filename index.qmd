@@ -51,9 +51,21 @@ In biblical studies, network analytics serves a greater purpose than simply conf
 
 To construct the co-occurrence networks, data was extracted from two separate repositories:
 
-1) **Qur'an:** Textual data was gathered via the Qur'an API [@network_api_nodate], utilizing the widely recognized Sahih International English translation. Translated by Emily Assami, Mary Kennedy, and Amatullah Bantley^[According to *Wikipedia*, it was published under the collective name Umm Muhammad], this version is known for its modern, un-archaic language while maintaining a conservative interpretive. An English translation^[Transliteration is converting from one writing system to another while preserving the pronunciation, translation is converting the meaning of a text from one language to another] was intentionally selected to facilitate standardized Named Entity Recognition (NER) and entity mapping.
+1) **Qur'an:** Textual data was gathered via the Qur'an API [@network_api_nodate], utilizing the widely recognized Sahih International English translation. Translated by Emily Assami, Mary Kennedy, and Amatullah Bantley, this version is known for its modern, un-archaic language while maintaining a conservative interpretive. An English translation^[Transliteration is converting from one writing system to another while preserving the pronunciation, translation is converting the meaning of a text from one language to another] was intentionally selected to facilitate standardized Named Entity Recognition (NER) and entity mapping.
 
 2) **Gospels:** Character co-presence data for the New Testament was sourced from the open-source BibleData project [@noauthor_bibledata_nodate]. Specifically, I utilized the pre-structured `PersonVerseApostolic.csv` file, which explicitly links figures within the same verse.
+
+
+::: {.callout-note icon=false}
+## Shared Subgraph Sub-Set ($N = 18$)
+
+There are **18 shared figures** out of the **198 Gospel nodes** and **38 Qur'anic nodes**:
+
+* **Prophets and Kings:** David, Elisha, John, Jonah, Moses, Solomon
+* **Divine and Angelic Figures:** Gabriel, Satan, YHVH (God)
+* **Patriarchs:** Aaron, Abraham, Adam, Isaac, Jacob, Joseph, Lot, Noah
+* **Matriarchs:** Mary
+:::
 
 ## Global Topology
 
@@ -67,16 +79,6 @@ This brings up a difficult question to answer, how to define textual proximity f
 - Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
 
 either verse-level, sliding window, or surah-level. . . 
-
-| Network Name | Nodes ($|V|$) | Edges ($|E|$) | Density ($D$) |
-| :--- | :---: | :---: | :---: |
-| **Gospels (Verse-Level)** | 189 | 465 | 0.0262 |
-| **Gospels (Sliding Window $N=5$)** | 198 | 2,657 | 0.1362 |
-| **Qur'an (Ayah-Level)** | 37 | 106 | 0.1592 |
-| **Qur'an (Sliding Window $N=5$)** | 37 | 184 | 0.2763 |
-| **Qur'an (Surah-Level)** | 37 | 326 | 0.4895 |
-
-: Textual Proximity Techniques {#tbl-network-metrics}
 
 Density: the proportion of actual connections in a network relative to all possible connections, indicating how interconnected the network is
 
@@ -136,9 +138,15 @@ $$
 
 * In real networks, properties are often power-law distributed
 
-![Sample Power Law Distribution Graph](images/power_law.png)
+![Sample Power Law Distribution Graph](images/power_law_sample.png)
 
 ## Community Detection
+
+Communities (i.e. modules or clusters): Sets of nodes with a relatively higher connection density within the cluster than between the clusters. High intra-cluster link density, lower inter-cluster link density
+
+Community Detection: Identifies groups of nodes with dense connections within a graph. Primarily used in network analysis. Emphasizes the structure and relationships in the network. Examples: modularity optimization, label propagation.
+
+Community Structure: Refers to the organization of nodes in a network into groups.
 
 **Louvain Method:**
 
@@ -156,7 +164,19 @@ $$
 
 # Results
 
+| Network Name | Nodes ($|V|$) | Edges ($|E|$) | Density ($D$) | Avg. Clustering Coeff ($C$) | Avg. Path Length ($L$) | Diameter ($d$) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **G $N=1$** | 189 | 465 | 0.0262 | 0.7450 | 3.4567 | 8 |
+| **G $N=5$** | 198 | 2,657 | 0.1362 | 0.7871 | 1.9986 | 3 |
+| **Q $N=1$** | 37 | 106 | 0.1592 | 0.5825 | 2.1176 | 4 |
+| **Q $N=5$** | 37 | 184 | 0.2763 | 0.7786 | 1.7718 | 3 |
+| **Q Surah-Level** | 37 | 326 | 0.4895 | 0.8441 | 1.5105 | 2 |
 
+: Overview of Textual Proximity Techniques {#tbl-network-metrics}
+
+![Power Law Distribution](images/power_law.png)
+
+![Community Detection](images/community_detection.png)
 
 # Discussion 
 

@@ -55,11 +55,13 @@ To construct the co-occurrence networks, data was extracted from two publicly av
 
 2) **Gospels:** Character co-presence data for the New Testament was sourced from the open-source BibleData project [@noauthor_bibledata_nodate]. Specifically, I utilized the pre-structured `PersonVerseApostolic.csv` file, which records all individuals co-occurring within each verse.
 
-The comparative analysis was restricted to the intersection of both datasets, consisting of 18 figures (out of the 198 Gospel figures and 38 Qur'anic figures) that appear in both networks. These shared figures are: **Aaron, Abraham, Adam, David, Elisha, Gabriel, Isaac, Jacob, John, Jonah, Joseph, Lot, Mary, Moses, Noah, Satan, Solomon, and YHVH (God).**
+The comparative analysis was restricted to the intersection of both datasets, consisting of 19 figures (out of the 198 Gospel figures and 38 Qur'anic figures) that appear in both networks. These shared figures are: **Aaron, Abraham, Adam, David, Elisha, Gabriel, God, Isaac, Jacob, Jesus, John, Jonah, Joseph, Lot, Mary, Moses, Noah, Satan, and Solomon.**
 
 ## Global Topology
 
 To represent the Qur'an and the Gospels as networks in this study, nodes represent named individuals, edges represent co-occurrence, edges are weighted by the number of co-occurrences, and the networks are undirected.
+
+To establish consistent node naming conventions, character labels across the texts were consolidated using the `person_id` column by BibleData[@noauthor_bibledata_nodate]. For example, in the Gospel corpus, `YHVH_1` represents Jesus (linking to 'Messiah' and 'Son of David'), whereas `YHVH_2` denotes God the Father.
 
 Because textual co-occurrence is not uniquely defined, several textual proximity definitions were considered, including verse (ayah)-level co-occurrence ($N=1$), a sliding window of five verses (ayahs) ($N=5$), and chapter (surah)-level co-occurrence. Table 1 summarizes the resulting network topology under each definition. Verse-level co-occurrence produced relatively sparse networks, whereas chapter-level co-occurrence generated overly dense graphs. The sliding $N=5$ definition was selected because it balanced network connectivity with one-off narratives while avoiding the excessive density introduced by chapter-level co-occurrence. Consequently, all subsequent analyses were conducted using the $N=5$ networks.
 
@@ -123,7 +125,7 @@ $$
 
 Communities are sets of nodes with a relatively higher connection density within the cluster than between the clusters. Community Detection is the process of identifying groups of nodes with dense connections within a graph.
 
-Communities were identified using the **Louvain algorithm**, which partitions the network by maximizing the modularity $Q$ score^[Modularity is the fraction of the edges that fall within the given groups minus the expected fraction if edges were distributed at random.] across the network. Louvain was selected because it is efficient and effective for large networks.
+Communities were identified using the **Louvain algorithm**, which partitions the network by maximizing the modularity $Q$ score^[Modularity is the fraction of the edges that fall within the given groups minus the expected fraction if edges were distributed at random] across the network. Louvain was selected because it is efficient and effective for large networks.
 
 Louvain uses a two-phase iterative optimization process. In phase 1, each node is moved to the community that yields the highest gain in modularity. In phase 2, the algorithm aggregates nodes of the same community and builds a new network. These steps are repeated iteratively until modularity is maximized and cannot be increased further.
 
@@ -133,11 +135,11 @@ $$
 
 # Results
 
-Figure 1 provides an overview of the final character co-occurrence networks constructed using the five-verse (ayah) definition for textual proximity. Nodes represent named figures, node size corresponds to degree centrality, and the five characters with the highest degree in each network are labeled. The visualization highlights substantial differences in network scale. 
+Figure 1 provides an overview of the final character co-occurrence networks constructed using the sliding $N=5$ definition for textual proximity. Nodes represent named figures, node size corresponds to degree centrality, and the five characters with the highest degree in each network are labeled. The visualization highlights substantial differences in network scale. 
 
 ![Side by side Gospel and Qur'an Network Overview](images/side_by_side_networks.png)
 
-The final networks differed substantially in scale and connectivity. The Gospel network contained 198 figures connected by 2,657 weighted edges, whereas the Qur'anic network contained only 37 figures connected by 184 edges. Despite its smaller size, the Qur'anic network exhibited greater overall density ($D=0.2763$ compared to $D=0.1362$).
+The Gospel network contained 198 figures connected by 2,657 edges, whereas the Qur'anic network contained only 37 figures connected by 184 edges. Despite its smaller size, the Qur'anic network exhibited greater overall density ($D=0.2763$ compared to $D=0.1362$).
 
 | Network | Proximity Definition | Nodes ($|V|$) | Edges ($|E|$) | Density ($D$) | Avg. Clustering Coef. ($C$) | Avg. Path Length ($L$) | Diameter ($d$) |
 | :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -146,13 +148,14 @@ The final networks differed substantially in scale and connectivity. The Gospel 
 
 : Final Comparison of Textual Proximity Techniques {#tbl-network-metrics}
 
-Both networks demonstrated high clustering, with average clustering coefficients^[The tendency of nodes in a graph to cluster together] of 0.7871 and 0.7786 for the Gospel and Qur'anic networks, respectively. Additionally, both networks had comparable diameters^[The maximum distance between any two nodes in a network] ($d=3$), suggesting that despite differences in scale, information can propagate through a small number of figures in either text.
+Both networks demonstrated high clustering, with average clustering coefficients^[The tendency of nodes in a graph to cluster together] of 0.7871 and 0.7786 for the Gospel and Qur'an, respectively. Additionally, both networks had comparable diameters^[The maximum distance between any two nodes in a network] ($d=3$), suggesting that despite differences in scale, information can propagate through a small number of figures in either text.
 
 Centrality measures were then compared among figures appearing in both texts to evaluate whether shared characters occupied similar structural positions across networks.
 
 |  | $G_{Degree}$ |   $Q_{Degree}$ |   $G_{Between}$ |   $Q_{Between}$ |   $G_{Close}$ |   $Q_{Close}$ |   $G_{Eigen}$ |   $Q_{Eigen}$ |
 |:------------|----------------:|----------------:|---------------------:|---------------------:|-------------------:|-------------------:|---------------------:|---------------------:|
-| YHVH        |           0.827 |           0.528 |                0.496 |                0.02  |              0.853 |              0.667 |                0.164 |                0.255 |
+| Jesus       |           0.827 |           0.528 |                0.496 |                0.02  |              0.853 |              0.667 |                0.164 |                0.255 |
+| God         |           0.234 |           0.972 |                0.015 |                0.528 |              0.566 |              0.973 |                0.032 |                0.297 |
 | Moses       |           0.117 |           0.028 |                0.002 |                0     |              0.531 |              0.5   |                0.024 |                0.019 |
 | Mary        |           0.218 |           0.25  |                0.015 |                0.006 |              0.561 |              0.562 |                0.031 |                0.119 |
 | Jacob       |           0.386 |           0.444 |                0.043 |                0.003 |              0.62  |              0.632 |                0.142 |                0.241 |
@@ -161,65 +164,44 @@ Centrality measures were then compared among figures appearing in both texts to 
 | Satan       |           0.162 |           0.056 |                0.004 |                0     |              0.513 |              0.507 |                0.019 |                0.025 |
 | Solomon     |           0.188 |           0.528 |                0.008 |                0.037 |              0.552 |              0.667 |                0.078 |                0.243 |
 | Noah        |           0.183 |           0.556 |                0.002 |                0.036 |              0.55  |              0.679 |                0.089 |                0.256 |
+: Comparison of Shared Character Centrality Metrics {#tbl-network-metrics}
 
-Several figures maintained high structural importance across both networks. David displayed consistently high degree centrality in both the Gospel ($0.457$) and Qur'anic ($0.472$) networks. Conversely, Joseph has a substantial difference in network role. While Joseph had minimal connectivity in the Gospel network ($D=0.015$), he was among the most connected figures in the Qur'anic network ($D=0.444$).
+David displayed consistently high degree centrality in both the Gospel ($0.457$) and Qur'an ($0.472$). Conversely, Joseph has a substantial difference in network role. While Joseph had minimal connectivity in the Gospel network ($D=0.015$), he was among the most connected figures in the Qur'anic network ($D=0.444$). Figure 2 showcases these findings graphically. 
 
-Degree centrality comparisons in figure 2 reveal that while several figures occupy similar positions across both networks, notable deviations exist. 
+![Graphical Centrality Comparisons](images/centrality_comparison.png)
 
-![Degree Centrality Comparisons](images/centrality_comparison.png)
+Additionally, likelihood comparisons do not support a pure power-law model as exhibited by figure 3. In both cases, exponential and lognormal alternatives provided better fits than the power-law distribution.
 
-Futhermore, although both networks display heavy-tailed degree distributions, likelihood comparisons do not support a pure power-law model as exhibited by figure 3. In both cases, exponential and lognormal alternatives provided better fits than the power-law distribution.
+![Gospel and Qur'an Power Law CCDF](images/power_law_ccdf.png){width=40%}
 
-![Power Law Distribution](images/power_law_ccdf.png)
-
-Community detection revealed contrasting levels of modular organization. The Gospel network demonstrated stronger community structure, with a modularity score of 0.5173, indicating relatively distinct clusters of characters. In contrast, the Qur'anic network displayed weaker modularity ($Q=0.1485$), suggesting a more interconnected structure without strongly separated communities.
-
-![Community Detection](images/community_detection.png)
+Community detection revealed contrasting levels of modular organization. The Gospel network demonstrated stronger community structure, with a modularity score of 0.517, indicating relatively distinct clusters of characters. In contrast, the Qur'anic network displayed weaker modularity ($Q=0.148$), suggesting a more interconnected structure without strongly separated communities.
 
 | Network                      |   Num Communities |   Modularity Score (Q) |   Largest Comm. Size |   Smallest Comm. Size |
 |:-----------------------------|------------------:|-----------------------:|---------------------:|----------------------:|
 | Gospels |                 5 |                 0.5173 |                   71 |                    17 |
 | Qur'an  |                 4 |                 0.1485 |                   16 |                     3 |
 
-This difference may reflect differences in narrative organization, where the Gospel network separates into more distinct character groups, while Qur'anic narratives repeatedly reconnect a smaller set of recurring figures across contexts.
+![Community Detection](images/community_detection.png)
 
 # Discussion 
 
-The network analysis demonstrates that the Gospel and Qur'anic character networks exhibit distinct structural organizations despite sharing a substantial number of figures. The Gospel network contains a much larger number of identified figures, reflecting the broader cast of characters present throughout the New Testament narratives. However, the Qur'anic network exhibits substantially greater density, indicating that the smaller set of recurring figures are connected more frequently relative to the size of the network.
+This study highlights that the Gospel and Qur'anic character networks exhibit distinct structural organizations despite sharing a substantial number of figures. The Gospel network contains a much larger number of identified figures, reflecting the broader nature of the New Testament narratives. However, the Qur'anic network exhibits substantially greater density, reflecting the frequent connections within thematic discourse.
 
-This difference suggests contrasting patterns of narrative organization. The Gospel network is characterized by a larger and more distributed collection of figures, where important characters emerge through relationships across a wider narrative landscape. In contrast, the Qur'anic network is organized around a smaller group of repeatedly referenced figures whose connections are more densely interconnected. Rather than representing a difference in narrative complexity, these patterns may reflect different mechanisms of storytelling and character recurrence.
+Comparison of centrality measures among shared figures reveals that the same individual may occupy substantially different structural roles across traditions. While some figures, such as David and Mary, maintain relatively similar importance in both networks, others demonstrate notable differences. These differences illustrate that shared characters should not be interpreted as occupying identical importance simply because they appear in both traditions. 
 
-Comparison of centrality measures among shared figures reveals that the same individual may occupy substantially different structural roles across traditions. While some figures, such as David and Mary, maintain relatively similar importance in both networks, others demonstrate notable differences.
+The community detection analysis further demonstrates differences in how characters are grouped within each tradition. The Gospel network exhibited stronger modular structure, suggesting the presence of more clearly separated clusters of characters. In contrast, the Qur'anic network demonstrated weaker modularity despite its higher density. This suggests that recurring figures are less separated into independent narrative communities and instead participate in overlapping relational structures throughout the text.
 
-For example, Joseph displays minimal structural importance in the Gospel network but becomes one of the most connected figures in the Qur'anic network. Conversely, YHVH demonstrates extremely high degree and betweenness centrality within the Gospel network, reflecting the importance of divine references throughout the text, while occupying a less dominant bridging position in the Qur'anic network.
+The absence of a power-law relationship in either network also provides an important observation. Although both networks contain highly connected figures, their degree distributions are better described by alternative heavy-tailed distributions rather than a strict scale-free model.
 
-These differences illustrate that shared characters should not be interpreted as occupying identical narrative positions simply because they appear in both traditions. Instead, network analysis captures how each text constructs relationships around these figures and highlights differences in narrative emphasis.
+Several limitations should be considered when interpreting these results. First, co-occurrence networks represent textual association rather than semantic, theological, or historical relationships. Two figures appearing within the same textual window does not necessarily indicate a meaningful relationship between them; it only captures their proximity within the source text. Second, the construction of edges depends heavily on the definition of textual proximity. Alternative proximity definitions may produce different network structures. Finally, this analysis relies on English translations and automated entity identification. Translation choices and named entity recognition errors may influence the resulting networks. Future work could incorporate original-language texts, more sophisticated entity resolution, and temporal or narrative sequence analysis to further investigate how character relationships develop throughout each tradition.
 
-The community detection analysis further demonstrates differences in how characters are grouped within each tradition. The Gospel network exhibited stronger modular structure, suggesting the presence of more clearly separated clusters of characters. These clusters may correspond to distinct narrative groups, such as disciples, genealogical figures, or groups associated with specific episodes.
-
-In contrast, the Qur'anic network demonstrated weaker modularity despite its higher density. This suggests that recurring figures are less separated into independent narrative communities and instead participate in overlapping relational structures throughout the text.
-
-The absence of a strong power-law relationship in either network also provides an important observation. Although both networks contain highly connected figures, their degree distributions are better described by alternative heavy-tailed distributions rather than a strict scale-free model. This suggests that prominence within these textual networks emerges from narrative structure rather than from a simple preferential attachment process.
-
-Several limitations should be considered when interpreting these results. First, co-occurrence networks represent textual association rather than semantic, theological, or historical relationships. Two figures appearing within the same textual window does not necessarily indicate a meaningful relationship between them; it only captures their proximity within the source text.
-
-Second, the construction of edges depends heavily on the definition of textual proximity. Although a five-verse/five-ayah sliding window was selected because it provided comparable network characteristics across traditions, alternative proximity definitions may produce different network structures.
-
-Additionally, this analysis relies on English translations and automated entity identification. Translation choices and named entity recognition errors may influence the resulting networks. Future work could incorporate original-language texts, more sophisticated entity resolution, and temporal or narrative sequence analysis to further investigate how character relationships develop throughout each tradition.
-
-Overall, the network approach reveals that the Gospel and Qur'anic texts share a common set of figures while organizing those figures into substantially different relational structures. The Gospel network is larger and more modular, whereas the Qur'anic network is smaller but more densely interconnected. These structural differences demonstrate how computational network analysis can provide a quantitative perspective on literary organization while complementing traditional textual interpretation.
+Overall, the network approach reveals that the Gospel and Qur'anic texts share a common set of figures while organizing those figures into substantially different relational structures. The Gospel network is larger and more modular, whereas the Qur'anic network is smaller but more densely interconnected. 
 
 # Conclusion
 
 This study applied network analysis to compare the character structures of the New Testament Gospels and the Qur'an, demonstrating how differences in literary organization influence the resulting relational networks. By representing named figures as nodes and textual co-occurrence as weighted edges, this research transformed two historically significant religious texts into comparable network structures.
 
-The results demonstrate that although the Gospels and Qur'an share a substantial set of figures, these characters occupy different structural roles within each tradition. The Gospel network exhibited a larger and more modular structure, reflecting a broader cast of characters and more differentiated narrative communities. In contrast, the Qur'anic network contained fewer figures but demonstrated greater density, indicating that recurring characters are connected across a more tightly integrated textual structure. These differences suggest that chronological narrative and thematic discourse produce distinct patterns of character organization.
-
-Centrality analysis further showed that shared figures do not necessarily maintain identical levels of prominence across traditions. While several figures, including David and Mary, occupied comparable structural positions, others demonstrated substantial variation. These differences highlight that character importance is not an inherent property of the figure alone, but emerges from the narrative context in which that figure appears.
-
-Additionally, degree distribution analysis demonstrated that both networks contain highly connected hub figures, although neither network exhibited strong evidence of a strict power-law distribution. Instead, the observed heavy-tailed distributions suggest that prominence emerges from the unique organizational structures of each text rather than from a universal network formation process.
-
-This study also highlights the methodological challenges of applying network analysis to ancient texts. Decisions regarding entity identification, translation, and textual proximity strongly influence the resulting networks. Future research could extend this approach through original-language analysis, improved entity resolution, temporal network modeling, and comparison with additional religious or literary traditions.
+The results demonstrate that although the Gospels and Qur'an share a substantial set of figures, these characters occupy different structural roles within each tradition. The Gospel network exhibited a larger and more modular structure, reflecting a broader cast of characters and more differentiated narrative communities. In contrast, the Qur'anic network contained fewer figures but demonstrated greater density, indicating that recurring characters are connected across a more tightly integrated textual structure. Centrality analysis further showed that shared figures do not necessarily maintain identical levels of prominence across traditions. While several figures, including David and Mary, occupied comparable structural positions, others demonstrated substantial variation. These differences highlight that character importance is not an inherent property of the figure alone, but emerges from the narrative context in which that figure appears. Additionally, degree distribution analysis demonstrated that both networks contain highly connected hub figures, although neither network exhibited strong evidence of a strict power-law distribution. Instead, the observed heavy-tailed distributions suggest that prominence emerges from the unique organizational structures of each text rather than from a universal network formation process.
 
 Ultimately, this work demonstrates that computational network analysis can provide a complementary perspective for studying religious literature. Rather than replacing traditional textual interpretation, network methods reveal structural patterns that may otherwise remain difficult to quantify, offering new insight into how shared narratives and figures are organized across distinct literary traditions.
 

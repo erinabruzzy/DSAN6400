@@ -49,48 +49,35 @@ In biblical studies, network analytics serves a greater purpose than simply conf
 
 # Methodology
 
-To construct the co-occurrence networks, data was extracted from two separate repositories:
+To construct the co-occurrence networks, data was extracted from two publicly available datasets:
 
-1) **Qur'an:** Textual data was gathered via the Qur'an API [@network_api_nodate], utilizing the widely recognized Sahih International English translation. Translated by Emily Assami, Mary Kennedy, and Amatullah Bantley, this version is known for its modern, un-archaic language while maintaining a conservative interpretive. An English translation^[Transliteration is converting from one writing system to another while preserving the pronunciation, translation is converting the meaning of a text from one language to another] was intentionally selected to facilitate standardized Named Entity Recognition (NER) and entity mapping.
+1) **Qur'an:** Textual data was gathered via the Qur'an API [@network_api_nodate], utilizing the Sahih International English translation. Translated by Emily Assami, Mary Kennedy, and Amatullah Bantley, this version is known for its modern, un-archaic language while maintaining a conservative interpretation. An English translation^[Transliteration is converting from one writing system to another while preserving the pronunciation, translation is converting the meaning of a text from one language to another] was selected because downstream Named Entity Recognition (NER) and entity resolution tools are substantially more mature for English than for Arabic, enabling more consistent identification and matching of individuals across texts.
 
-2) **Gospels:** Character co-presence data for the New Testament was sourced from the open-source BibleData project [@noauthor_bibledata_nodate]. Specifically, I utilized the pre-structured `PersonVerseApostolic.csv` file, which explicitly links figures within the same verse.
+2) **Gospels:** Character co-presence data for the New Testament was sourced from the open-source BibleData project [@noauthor_bibledata_nodate]. Specifically, I utilized the pre-structured `PersonVerseApostolic.csv` file, which records all individuals co-occurring within each verse.
 
-
-::: {.callout-note icon=false}
-## Shared Subgraph Sub-Set ($N = 18$)
-
-There are **18 shared figures** out of the **198 Gospel nodes** and **38 Qur'anic nodes**:
-
-* **Prophets and Kings:** David, Elisha, John, Jonah, Moses, Solomon
-* **Divine and Angelic Figures:** Gabriel, Satan, YHVH (God)
-* **Patriarchs:** Aaron, Abraham, Adam, Isaac, Jacob, Joseph, Lot, Noah
-* **Matriarchs:** Mary
-:::
+The comparative analysis was restricted to the intersection of both datasets, consisting of 18 figures (out of the 198 Gospel figures and 38 Qur'anic figures) that appear in both the Gospel and Qur'anic networks. These shared figures are: **Aaron, Abraham, Adam, David, Elisha, Gabriel, Isaac, Jacob, John, Jonah, Joseph, Lot, Mary, Moses, Noah, Satan, Solomon, and YHVH (God).**
 
 ## Global Topology
 
-Nodes: characters
+To represent the Qur'an and the Gospels as networks in this study, nodes represent named individuals, edges represent co-occurrence, edges are weighted by the number of co-occurrences, and the networks are undirected.
 
-Edges: instances of co-occurence between characters
+Because textual co-occurrence is not uniquely defined, several textual proximity definitions were considered, including verse (ayah)-level co-occurrence ($N=1$), a sliding window of five verses (ayahs) ($N=5$), and chapter (surah)-level co-occurrence. Table 1 summarizes the resulting network topology under each definition. Verse-level co-occurrence produced relatively sparse networks, whereas chapter-level co-occurrence generated overly dense graphs that connected many figures indirectly. The $N=5$ definition was selected because it balanced network connectivity with independent narratives while avoiding the excessive density introduced by chapter-level co-occurrence. Consequently, all subsequent analyses were conducted using the $N=5$ networks.
 
-This brings up a difficult question to answer, how to define textual proximity for edges?
-- the bibledata defines relationships within verses, but the Qur'an is written in a different style requiring its own approach 
-- also, the bibledata out of the box definition rersults in a pretty sparse network 
-- Qur'an data preprocessing was set up to mirror that, co-presence established within each verse
+Global network structure was characterized using density, average clustering coefficient, average shortest path length, and network diameter. Together these metrics quantify the overall connectivity, local cohesiveness, and efficiency of information flow within each network.
 
-either verse-level, sliding window, or surah-level. . . 
+| Network | Proximity Definition | Nodes ($|V|$) | Edges ($|E|$) | Density ($D$) | Average Clustering Coefficient ($C$) | Average Path Length ($L$) | Diameter ($d$) |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gospel | Verse ($N=1$) | 189 | 465 | 0.0262 | 0.7450 | 3.4567 | 8 |
+| Gospel | Five-verse window ($N=5$) | 198 | 2,657 | 0.1362 | 0.7871 | 1.9986 | 3 |
+| Qur'an | Ayah ($N=1$) | 37 | 106 | 0.1592 | 0.5825 | 2.1176 | 4 |
+| Qur'an | Five-ayah window ($N=5$) | 37 | 184 | 0.2763 | 0.7786 | 1.7718 | 3 |
+| Qur'an | Surah | 37 | 326 | 0.4895 | 0.8441 | 1.5105 | 2 |
 
-Density: the proportion of actual connections in a network relative to all possible connections, indicating how interconnected the network is
-
-Average Clustering Coefficient: quantifies the degree to which nodes in the graph tend to cluster together.
-
-insert formula?
-
-Average Path Length: the average number of steps along the shortest paths for all possible pairs of nodes. It measures the efficiency of information or mass transport in a network.
-
-Diameter: the greatest distance between any pair of nodes, measured along the shortest paths connecting them. 
+: Comparison of Topology Using Textual Proximity Techniques {#tbl-network-metrics}
 
 ## Centrality Measurements
+
+Node importance was evaluated using four complementary centrality measures: degree centrality, betweenness centrality, closeness centrality, and eigenvector centrality.
 
 **Degree Centrality**
 Degree is a simple centrality measure that counts how many neighbors a node has. A node is important if it has many neighbors, or, in the directed case, if there are many other nodes that link to it, or if it links to many other nodes.
@@ -106,20 +93,20 @@ $$
 In a connected graph, the normalized closeness centrality (or closeness) of a node is the average length of the shortest path between the node and all other nodes in the graph. Thus the more central a node is, the closer it is to all other nodes.
 
 $$
-C_B'(v) = \frac{2}{(N - 1)(N - 2)} \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}
+C_C(v) = \frac{N - 1}{\sum_{u \neq v} d(v, u)}
 $$
 
-* $\sigma_{st}$: Total number of shortest paths from node $s$ to node $t$
-* $\sigma_{st}(v)$: Number of those shortest paths that pass through node $v$
+* $d(v, u)$: Shortest path distance (geodesic distance) between node $v$ and node $u$
 
 **Betweeness Centrality**
 Betweenness centrality quantifies the number of times a node acts as a bridge along the shortest path between two other nodes.
 
 $$
-C_C(v) = \frac{N - 1}{\sum_{u \neq v} d(v, u)}
+C_B'(v) = \frac{2}{(N - 1)(N - 2)} \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}
 $$
 
-* $d(v, u)$: Shortest path distance (geodesic distance) between node $v$ and node $u$
+* $\sigma_{st}$: Total number of shortest paths from node $s$ to node $t$
+* $\sigma_{st}(v)$: Number of those shortest paths that pass through node $v$
 
 **Eigenvector Centrality**
 Eigen-centrality is a prestige score which measures the node’s influence. It is a nodal attribute, as is the case with all other centrality measures. Connections to high-scoring nodes contribute more to the score of the node in question than equal connections to low-scoring nodes. A high Eigen-centrality means the node is connected to many nodes with high scores.
@@ -130,49 +117,25 @@ $$
 
 ## Power-Law Distribution
 
-A power law is a functional relationship between two quantities, where a relative change in one quantity results in a relative change in the other quantity proportional to a power of the change, independent of the initial size of those quantities
+A power law is a functional relationship between two quantities, where a relative change in one quantity results in a relative change in the other quantity proportional to a power of the change, independent of the initial size of those quantities. In real networks, properties are often power-law distributed.
 
 $$
 f(x) = \alpha x^{-k}
 $$
 
-* In real networks, properties are often power-law distributed
-
-![Sample Power Law Distribution Graph](images/power_law_sample.png)
-
 ## Community Detection
 
-Communities (i.e. modules or clusters): Sets of nodes with a relatively higher connection density within the cluster than between the clusters. High intra-cluster link density, lower inter-cluster link density
+Communities are sets of nodes with a relatively higher connection density within the cluster than between the clusters. Community Detection is the process of identifying groups of nodes with dense connections within a graph.
 
-Community Detection: Identifies groups of nodes with dense connections within a graph. Primarily used in network analysis. Emphasizes the structure and relationships in the network. Examples: modularity optimization, label propagation.
+Community structure was identified using the **Louvain algorithm**, which partitions the network by maximizing the modularity $Q$ score across the network. Louvain was selected because it is efficient and effective for large networks.
 
-Community Structure: Refers to the organization of nodes in a network into groups.
-
-**Louvain Method:**
-
-- For networks with weighted co-occurrence edges, the Louvain algorithm is the gold standard.
-
-- Maximizes modularity score $Q$ across the network.
-
-- Efficient and effective for large networks.
-
-- Uses a two-phase iterative optimization process. In phase 1, each node is moved to the community that yields the highest gain in modularity. In phase 2, the algorithm aggregates nodes of the same community and builds a new network. These steps are repeated iteratively until modularity is maximized and cannot be increased further.
+Louvain uses a two-phase iterative optimization process. In phase 1, each node is moved to the community that yields the highest gain in modularity. In phase 2, the algorithm aggregates nodes of the same community and builds a new network. These steps are repeated iteratively until modularity is maximized and cannot be increased further.
 
 $$
 Q = \frac{1}{2m} \sum_{ij} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j)
 $$
 
 # Results
-
-| Network Name | Nodes ($|V|$) | Edges ($|E|$) | Density ($D$) | Avg. Clustering Coeff ($C$) | Avg. Path Length ($L$) | Diameter ($d$) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **G $N=1$** | 189 | 465 | 0.0262 | 0.7450 | 3.4567 | 8 |
-| **G $N=5$** | 198 | 2,657 | 0.1362 | 0.7871 | 1.9986 | 3 |
-| **Q $N=1$** | 37 | 106 | 0.1592 | 0.5825 | 2.1176 | 4 |
-| **Q $N=5$** | 37 | 184 | 0.2763 | 0.7786 | 1.7718 | 3 |
-| **Q Surah-Level** | 37 | 326 | 0.4895 | 0.8441 | 1.5105 | 2 |
-
-: Overview of Textual Proximity Techniques {#tbl-network-metrics}
 
 ![Power Law Distribution](images/power_law.png)
 

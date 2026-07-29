@@ -14,7 +14,8 @@ This study seeks to analyze textual data from the four New Testament Gospels (Ma
 ```
 ├── index.qmd        
 ├── index.pdf     
-├── references.bib         
+├── references.bib   
+├── images/      
 ├── social_network_analysis.ipynb                 
 └── README.md              
 ```
